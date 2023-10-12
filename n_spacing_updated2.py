@@ -10,7 +10,7 @@ def spacing(filename):
     iteration_tags = xml_data.find_all("iteration")
 
     iteration_count = 0
-    n_differences, n_distances = [], []
+    n_distances = []
     n9_position, n10_position = None, None
 
     for iteration in iteration_tags:
@@ -28,18 +28,23 @@ def spacing(filename):
 
         if n9_position and n10_position is not None:
           n9_array, n10_array = np.array(n9_position), np.array(n10_position)
-          n_differences.append(n9_array-n10_array)
 
       lx, ly, lz = 5.54, 4.72, 12.14
 
-      n_distance = math.sqrt(((n9_array - n10_array)[0] % lx)**2 + ((n9_array - n10_array)[1] % ly)**2 + ((n9_array - n10_array)[2] % lz)**2)
+      #n_distance = math.sqrt(((n9_array - n10_array)[0] % lx)**2 + ((n9_array - n10_array)[1] % ly)**2 + ((n9_array - n10_array)[2] % lz)**2)
+  
+      dx,dy,dz = n9_array[0] - n10_array[0],n9_array[1] - n10_array[1],n9_array[2] - n10_array[2]
+      n_distance = math.sqrt((dx - (lx * round(dx/lx)))**2 + (dy - (ly * round(dy/ly)))**2 + (dz - (lx * round(dz/lz)))**2)
       n_distances.append(n_distance)
 
-  x_axis = np.linspace(0, iteration_count, len(n_distances))
+  #FIXED PBC ISSUE: new logic in line 36 and 37. bit of a doozy.
+  #FIXED 2D LIST ISSUE: tried to simplify some things and now n_distance's space is workable finally.
+
+  x_axis = np.linspace(0, float(iteration_count*.483), len(n_distances))
   plt.plot(x_axis, n_distances)
-  plt.xlabel("Iteration (fs)")
+  plt.xlabel("Time (fs)")
   plt.ylabel("N-N Distance (ang)")
-  plt.title("N-N Distance vs Time (WITH PCB)")
+  plt.title("N-N Distance vs Time (WITH PBC)")
   plt.show()
 
-spacing("ssages_out_0_run_0_cleaned_frame1and2.xml")
+spacing("ssages_out_0_run_0_cleaned.xml")
