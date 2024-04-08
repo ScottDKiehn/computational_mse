@@ -3,7 +3,7 @@ import sys
 from sys import argv
 import os
 
-def parser(filename, output):
+def parser(filename, output, lx, ly, lz):
   with open(output, "w") as l:
     sys.stdout = l
     with open(filename, "r") as f:
@@ -26,11 +26,11 @@ def parser(filename, output):
         print(f"{len(atom_data)}\n")
         for i in range(len(atom_data)):
           x,y,z = map(float, position_data_list[i])
-          print(f"{atom_data[i]} {10*x} {10*y} {10*z}")
+          print(f"{atom_data[i]} {lx*x} {ly*y} {lz*z}")
 
-if len(argv) != 3:
-  os.system("echo " + "usage: python vasprun_to_xyz.py <filename.xml> <outputfilename.xyz>")   
+if len(argv) != 6:
+  os.system("echo " + "usage: python vasprun_to_xyz.py <filename.xml> <outputfilename.xyz>, <lx>, <ly>, <lz>")   
 else:
   os.system("echo " + "converting to xyz...")   
-  filename, output = argv[1], argv[2]
-  parser(filename, output)
+  filename, output, lx, ly, lz = argv[1], argv[2], argv[3], argv[4], argv[5]
+parser(filename, output, lx, ly, lz)
