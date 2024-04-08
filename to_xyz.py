@@ -17,8 +17,7 @@ def xyz(filename, output, lx, ly, lz):
         iteration_count += 1
         
         atom_tags = iteration.find_all("atom")
-        print(len(atom_tags))
-        print("")
+        print(f"{len(atom_tags)}\n")
 
         for atom in atom_tags:
           name = atom.get("name")
@@ -33,3 +32,8 @@ else:
   os.system("echo " + "Converting to XYZ")
   filename, output, lx, ly, lz = argv[1],argv[2],argv[3],argv[4],argv[5]
   xyz(filename, output, lx, ly, lz)
+
+
+#redo nblock_2
+#do vasp tutorials vasp.at
+#parse vasprun into POSCAR file format
